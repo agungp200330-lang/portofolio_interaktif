@@ -28,15 +28,30 @@ func init() {
 		Views: engine,
 	})
 
-	// Static file handler using embedded files
-	app.Use("/", filesystem.New(filesystem.Config{
+	// Setup routes FIRST (before static files)
+	routes.SetupRoutes(app)
+
+	// Static file handler using embedded files (for css, js, img, etc.)
+	app.Use("/css", filesystem.New(filesystem.Config{
 		Root:       http.FS(publicFS),
-		PathPrefix: "public",
+		PathPrefix: "public/css",
 		Browse:     false,
 	}))
-
-	// Setup routes
-	routes.SetupRoutes(app)
+	app.Use("/js", filesystem.New(filesystem.Config{
+		Root:       http.FS(publicFS),
+		PathPrefix: "public/js",
+		Browse:     false,
+	}))
+	app.Use("/img", filesystem.New(filesystem.Config{
+		Root:       http.FS(publicFS),
+		PathPrefix: "public/img",
+		Browse:     false,
+	}))
+	app.Use("/fonts", filesystem.New(filesystem.Config{
+		Root:       http.FS(publicFS),
+		PathPrefix: "public/fonts",
+		Browse:     false,
+	}))
 }
 
 // Handler is the exported function Vercel will call
