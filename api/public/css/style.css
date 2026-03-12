@@ -1494,4 +1494,113 @@ body::after {
         height: 100vh;
         border-radius: 0;
     }
+
+    /* Mobile Overrides for Better Android/iOS Layout */
+    
+    /* Hero */
+    .hero-cinematic {
+        padding-top: 15vh;
+        display: block;
+        text-align: left;
+    }
+    .hero-main-title {
+        font-size: clamp(3rem, 15vw, 5rem);
+        line-height: 1;
+        margin: 1rem 0;
+    }
+    .hero-image-cinematic {
+        position: relative;
+        transform: none;
+        top: 0;
+        right: 0;
+        left: -5%;
+        margin-top: 3rem;
+        width: 110%; /* Break out of container slightly for cool effect */
+        height: 350px;
+        opacity: 0.5;
+        z-index: 1;
+    }
+    .glow-bg {
+        width: 150%;
+        height: 150%;
+    }
+    .scroll-status {
+        bottom: 2rem;
+        left: 5%;
+    }
+    .scroll-indicator-modern {
+        display: none; /* Hide wheel on mobile, it takes up too much space */
+    }
+
+    /* About */
+    .about-section-cinema {
+        padding: 10vh 0;
+    }
+    .massive-text {
+        font-size: clamp(2rem, 8vw, 2.5rem);
+        margin-bottom: 3rem;
+    }
+    .scroll-indicator-data {
+        display: none; /* Hide side indicator on small screens */
+    }
+
+    /* Experience */
+    .experience-cinema {
+        padding: 10vh 0;
+    }
+    .section-header-minimal {
+        margin-bottom: 5rem;
+        text-align: left;
+    }
+    .title-serif-lg {
+        font-size: 2.5rem;
+        line-height: 1.1;
+    }
+    
+    /* Projects */
+    .projects-cinema {
+        padding: 5vh 0;
+    }
+    .projects-list-vertical {
+        gap: 8rem; /* Reduce crazy 50vh gap to something normal on mobile */
+    }
+    .project-image-wrapper {
+        min-height: auto;
+        padding: 0;
+    }
+    .project-item-cinema {
+        gap: 2rem;
+    }
+    .window-frame {
+        width: 100%;
+    }
+    .project-name-serif {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Contact */
+    .contact-cinema {
+        padding: 15vh 0 5vh;
+    }
+    .contact-center .massive {
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+    }
+    .big-contact-link {
+        font-size: 1.5rem;
+        gap: 1rem;
+    }
+    .footer-minimal {
+        margin-top: 8rem;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+        text-align: center;
+        padding-top: 3rem;
+    }
+    .social-links-minimal {
+        flex-direction: column;
+        gap: 1rem;
+    }
 }
