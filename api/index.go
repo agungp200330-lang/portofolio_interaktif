@@ -2,6 +2,7 @@ package api
 
 import (
 	"embed"
+	"io/fs"
 	"net/http"
 	"portofolio/routes"
 
@@ -20,8 +21,12 @@ var publicFS embed.FS
 var app *fiber.App
 
 func init() {
-	// Initialize template engine using embedded files
-	engine := html.NewFileSystem(http.FS(viewsFS), ".html")
+	// Strip the "views/" prefix so templates are accessible as "home", "layouts/main", etc.
+	viewsSub, _ := fs.Sub(viewsFS, "views")
+	engine := html.NewFileSystem(http.FS(viewsSub), ".html")
+
+	// Strip the "public/" prefix for static files
+	publicSub, _ := fs.Sub(publicFS, "public")
 
 	// Create Fiber app
 	app = fiber.New(fiber.Config{
@@ -33,24 +38,24 @@ func init() {
 
 	// Static file handler using embedded files (for css, js, img, etc.)
 	app.Use("/css", filesystem.New(filesystem.Config{
-		Root:       http.FS(publicFS),
-		PathPrefix: "public/css",
-		Browse:     false,
+		Root:   http.FS(publicSub),
+		PathPrefix: "css",
+		Browse: false,
 	}))
 	app.Use("/js", filesystem.New(filesystem.Config{
-		Root:       http.FS(publicFS),
-		PathPrefix: "public/js",
-		Browse:     false,
+		Root:   http.FS(publicSub),
+		PathPrefix: "js",
+		Browse: false,
 	}))
 	app.Use("/img", filesystem.New(filesystem.Config{
-		Root:       http.FS(publicFS),
-		PathPrefix: "public/img",
-		Browse:     false,
+		Root:   http.FS(publicSub),
+		PathPrefix: "img",
+		Browse: false,
 	}))
 	app.Use("/fonts", filesystem.New(filesystem.Config{
-		Root:       http.FS(publicFS),
-		PathPrefix: "public/fonts",
-		Browse:     false,
+		Root:   http.FS(publicSub),
+		PathPrefix: "fonts",
+		Browse: false,
 	}))
 }
 
