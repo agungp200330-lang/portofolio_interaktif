@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	// Initialize standard Go html template engine
-	engine := html.New("./views", ".html")
+	// Initialize standard Go html template engine pointing to api folder
+	engine := html.New("./api/views", ".html")
 	engine.Reload(true) // Enable hot reloading for templates
 
 	// Pass the engine to the Fiber app
@@ -19,8 +19,8 @@ func main() {
 		Views: engine,
 	})
 
-	// Static file handler for CSS, JS, Images
-	app.Static("/", "./public")
+	// Static file handler for CSS, JS, Images from api folder
+	app.Static("/", "./api/public")
 
 	// Setup routes
 	routes.SetupRoutes(app)
