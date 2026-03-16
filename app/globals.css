@@ -1532,34 +1532,34 @@ body::after {
 
     /* Hero */
     .hero-cinematic {
-        padding-top: 12vh;
+        padding-top: 15vh;
         min-height: 90vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
+        overflow: hidden;
     }
     .hero-main-title {
         font-size: clamp(2.8rem, 12vw, 4rem);
         line-height: 1.1;
         margin: 0.5rem 0;
+        z-index: 10;
+        position: relative;
     }
     .hi-iam-modern {
         font-size: 0.7rem;
         letter-spacing: 4px;
+        z-index: 10;
+        position: relative;
     }
     .hero-image-cinematic {
-        position: relative;
-        transform: none !important;
-        top: 0;
-        right: 0;
-        left: 0;
-        margin: 2rem auto 0;
-        width: 100%;
-        max-width: 300px;
-        height: 400px;
-        opacity: 0.8;
+        position: absolute;
+        bottom: 5vh;
+        right: -10%;
+        width: 280px;
+        height: 380px;
+        opacity: 0.6;
         z-index: 1;
+        transform: none !important;
     }
+
     .hero-image-cinematic .image-mask {
         transform: none !important;
     }
@@ -1663,8 +1663,19 @@ body::after {
     filter: none !important;
     backdrop-filter: none !important;
     transition-duration: 0.1s !important; /* Faster transitions */
+    box-shadow: none !important; /* Shadows are expensive to paint */
+    text-shadow: none !important;
 }
 
-.low-perf .noise-overlay {
-    display: none; /* Noise overlay is expensive on CPU */
-}
+.low-perf .noise-overlay,
+.low-perf body::before {
+    display: none !important; /* Noise kills old CPUs */
+}
+
+.low-perf .glow-bg {
+    display: none !important;
+}
+
+.low-perf .bg-nodes-container {
+    opacity: 0.1 !important;
+}

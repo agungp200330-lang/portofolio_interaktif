@@ -25,14 +25,18 @@ export default function Portfolio() {
   const lenisRef = useRef(null);
 
   useEffect(() => {
-    // Performance check: simple heuristic for older/low-end devices
+    // Performance check: aggressive heuristic for older/low-end devices
     if (typeof window !== "undefined") {
       const isLowEnd = (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) || 
+                       (navigator.deviceMemory && navigator.deviceMemory < 8) ||
                        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
       if (isLowEnd) {
         document.body.classList.add("low-perf");
+        window.isLowPerf = true;
       }
     }
+
 
     // Initialize Lenis
 
@@ -62,35 +66,39 @@ export default function Portfolio() {
     requestAnimationFrame(raf);
 
 
-    // Sync scroll progress and skew effects
-    lenis.on("scroll", (e) => {
-      const progress =
-        (window.scrollY /
-          (document.documentElement.scrollHeight - window.innerHeight)) *
-        100;
-      gsap.to(".scroll-progress-bar", {
-        width: `${progress}%`,
-        duration: 0.1,
-        ease: "none",
-        force3D: true,
+      // Sync scroll progress and skew effects
+      lenis.on("scroll", (e) => {
+        const progress =
+          (window.scrollY /
+            (document.documentElement.scrollHeight - window.innerHeight)) *
+          100;
+        gsap.to(".scroll-progress-bar", {
+          width: `${progress}%`,
+          duration: 0.1,
+          ease: "none",
+          force3D: true,
+        });
+
+        // Skip skew on low perf
+        if (!window.isLowPerf) {
+          const velocity = Math.min(Math.max(e.velocity, -20), 20);
+          gsap.to(".hero-center-content, .about-hero-text", {
+            skewY: velocity * 0.1,
+            duration: 0.5,
+            ease: "power2.out",
+            overwrite: "auto",
+            force3D: true,
+          });
+          gsap.to(".marquee-container", {
+            skewX: velocity * 0.8,
+            duration: 0.5,
+            ease: "power3.out",
+            overwrite: "auto",
+            force3D: true,
+          });
+        }
       });
 
-      const velocity = Math.min(Math.max(e.velocity, -20), 20);
-      gsap.to(".hero-center-content, .about-hero-text", {
-        skewY: velocity * 0.1,
-        duration: 0.5,
-        ease: "power2.out",
-        overwrite: "auto",
-        force3D: true,
-      });
-      gsap.to(".marquee-container", {
-        skewX: velocity * 0.8,
-        duration: 0.5,
-        ease: "power3.out",
-        overwrite: "auto",
-        force3D: true,
-      });
-    });
 
     // Cleanup
     return () => {
