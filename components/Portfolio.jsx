@@ -339,8 +339,7 @@ export default function Portfolio() {
                 <span className="about-line">that scale.</span>
               </h2>
               <div className="about-details-minimal">
-                <p>I am a Software Developer and Data Analyst specializing in bridging the gap between complex data and functional systems. From automating logistics with Java to building high-scale transaction platforms with Laravel 12, I focus on creating tools that solve real-world operational challenges.</p>
-                <p style={{ marginTop: "1.5rem" }}>Currently, I am driving digital transformation at the <strong>Ministry of Trade</strong>, analyzing market entities and building secure systems for commodity futures trading. I believe in code that isn't just clean, but creates immediate business value.</p>
+                <p>Software Developer & Data Analyst. Memiliki pengalaman dalam menganalisis data serta membangun sistem web fungsional. Saat ini aktif dalam transformasi digital di <strong>Kementerian Perdagangan</strong>, membangun sistem informasi pengelolaan data transaksi setiap bursa mengenai perdagangan berjangka komoditi.</p>
               </div>
             </div>
           </div>
@@ -360,13 +359,7 @@ export default function Portfolio() {
             </header>
             <div className="about-grid">
               <div className="about-text">
-                <p>I am a Software Developer and Data Analyst specializing in bridging the gap between complex data and
-                    functional systems. From automating logistics with <strong>Java</strong> to building high-scale
-                    transaction platforms with <strong>Laravel 12</strong>, I focus on creating tools that solve
-                    real-world operational challenges.</p>
-                <p>Currently, I am driving digital transformation at the <strong>Ministry of Trade</strong>, analyzing
-                    market entities and building secure systems for commodity futures trading. I believe in code that
-                    isn't just clean, but creates immediate business value.</p>
+                <p>Software Developer & Data Analyst. Memiliki pengalaman dalam menganalisis data serta membangun sistem web fungsional. Saat ini aktif dalam transformasi digital di <strong>Kementerian Perdagangan</strong>, membangun sistem informasi pengelolaan data transaksi setiap bursa mengenai perdagangan berjangka komoditi.</p>
               </div>
               <div className="about-skills-card">
                 <h3>Technical Arsenal</h3>
