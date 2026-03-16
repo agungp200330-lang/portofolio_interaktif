@@ -424,10 +424,12 @@ body::after {
 
 .line {
     color: #fff;
+    opacity: 1;
 }
 
 .line-italic {
     color: var(--accent-color);
+    opacity: 1;
     margin-left: 0.2em;
     font-style: italic;
 }

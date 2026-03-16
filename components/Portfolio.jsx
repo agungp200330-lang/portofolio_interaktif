@@ -41,30 +41,31 @@ export default function Portfolio() {
     // Initialize Lenis
 
     // Initialize Lenis with more robust settings
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      smoothTouch: false, // Di-disable untuk mobile agar tidak berat
-      touchMultiplier: 2,
-      infinite: false,
-    });
+    let lenis = null;
+    if (!window.isLowPerf) {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: "vertical",
+        gestureOrientation: "vertical",
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+      });
 
-    lenisRef.current = lenis;
+      lenisRef.current = lenis;
 
-    // Tambahkan kelas ke HTML untuk styling scroll
-    document.documentElement.classList.add('lenis');
+      // Tambahkan kelas ke HTML untuk styling scroll
+      document.documentElement.classList.add('lenis');
 
-    const raf = (time) => {
-      lenis.raf(time);
+      const raf = (time) => {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      };
+
       requestAnimationFrame(raf);
-    };
-
-    requestAnimationFrame(raf);
-
 
       // Sync scroll progress and skew effects
       lenis.on("scroll", (e) => {
@@ -98,6 +99,14 @@ export default function Portfolio() {
           });
         }
       });
+    } else {
+        // Fallback progress scroll for native scroll
+        window.addEventListener("scroll", () => {
+            const progress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            gsap.to(".scroll-progress-bar", { width: `${progress}%`, duration: 0.1, ease: "none" });
+        });
+    }
+
 
 
     // Cleanup
@@ -113,12 +122,25 @@ export default function Portfolio() {
   };
 
   const initAnimations = () => {
+    // If low perf, skip long opening
+    if (window.isLowPerf) {
+        gsap.set(".hi-iam-modern, .hero-main-title .line, .hero-main-title .line-italic, .hero-image-cinematic, .hero-role-modern, .scroll-status, .scroll-indicator-modern", { 
+            opacity: 1, 
+            y: 0, 
+            x: 0,
+            scale: 1,
+            filter: "none"
+        });
+        return;
+    }
+
     // opening animation
     const tl = gsap.timeline();
     tl.from(".hi-iam-modern", { y: 20, opacity: 0, duration: 1, ease: "power3.out" })
       .from(".hero-main-title .line", { y: 100, opacity: 0, duration: 1.5, ease: "power4.out", stagger: 0.2 }, "-=0.8")
       .from(".hero-main-title .line-italic", { x: -50, opacity: 0, duration: 1.5, ease: "power4.out" }, "-=1.2")
       .from(".hero-image-cinematic", { x: 100, opacity: 0, duration: 2, ease: "power2.out" }, "-=1.5")
+
       .from(".hero-role-modern", { y: 20, opacity: 0, duration: 1, ease: "power3.out" }, "-=1")
       .from(".scroll-status", { opacity: 0, duration: 2 }, "-=0.5")
       .from(".scroll-indicator-modern", { y: 20, opacity: 0, duration: 1 }, "-=1");
