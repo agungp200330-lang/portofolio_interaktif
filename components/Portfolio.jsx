@@ -36,27 +36,31 @@ export default function Portfolio() {
 
     // Initialize Lenis
 
+    // Initialize Lenis with more robust settings
     const lenis = new Lenis({
-      duration: 2.2,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 0.7,
-      smoothTouch: false,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 1,
+      smoothTouch: false, // Di-disable untuk mobile agar tidak berat
+      touchMultiplier: 2,
       infinite: false,
     });
 
     lenisRef.current = lenis;
 
-    lenis.on("scroll", ScrollTrigger.update);
+    // Tambahkan kelas ke HTML untuk styling scroll
+    document.documentElement.classList.add('lenis');
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    const raf = (time) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
 
-    gsap.ticker.lagSmoothing(0);
+    requestAnimationFrame(raf);
+
 
     // Sync scroll progress and skew effects
     lenis.on("scroll", (e) => {

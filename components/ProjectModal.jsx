@@ -6,8 +6,8 @@ import gsap from "gsap";
 import Image from "next/image";
 
 
-const isProd = process.env.NODE_ENV === "production";
-const basePath = isProd ? "/portofolio_interaktif" : "";
+const basePath = "/portofolio_interaktif";
+
 
 export default function ProjectModal({ project, onClose }) {
   const modalRef = useRef(null);

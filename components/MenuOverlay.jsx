@@ -29,19 +29,21 @@ export default function MenuOverlay({ isOpen, onClose }) {
     if (target.startsWith("#")) {
       e.preventDefault();
       onClose();
-      // Use lenis to scroll if window.lenis exists or via props
-      // For now, standard smooth scroll or handle via window global if we set it
+      
       setTimeout(() => {
         const element = document.querySelector(target);
         if (element) {
+            // Scroll menggunakan window.scrollTo yang dideteksi Lenis
+            const offset = element.getBoundingClientRect().top + window.pageYOffset - 80;
             window.scrollTo({
-                top: element.offsetTop - 100,
+                top: offset,
                 behavior: "smooth"
             });
         }
       }, 400);
     }
   };
+
 
 
   return (
