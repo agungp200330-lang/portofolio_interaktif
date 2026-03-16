@@ -25,87 +25,83 @@ export default function Portfolio() {
   const lenisRef = useRef(null);
 
   useEffect(() => {
-    // Performance check: aggressive heuristic for older/low-end devices
+    // Performance check: Less aggressive, allow animations on most devices
     if (typeof window !== "undefined") {
-      const isLowEnd = (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) || 
-                       (navigator.deviceMemory && navigator.deviceMemory < 8) ||
-                       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isUltraLowEnd = (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 2) || 
+                            (navigator.deviceMemory && navigator.deviceMemory < 4);
       
-      if (isLowEnd) {
+      if (isUltraLowEnd) {
         document.body.classList.add("low-perf");
         window.isLowPerf = true;
       }
+      window.isMobile = isMobile;
     }
+
 
 
     // Initialize Lenis
 
-    // Initialize Lenis with more robust settings
-    let lenis = null;
-    if (!window.isLowPerf) {
-      lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        orientation: "vertical",
-        gestureOrientation: "vertical",
-        smoothWheel: true,
-        wheelMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
-        infinite: false,
+    // Initialize Lenis
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: "vertical",
+      gestureOrientation: "vertical",
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      // Only disable smoothTouch if truly necessary, but let's try 
+      // keeping it enabled with low-perf check for better feel
+      smoothTouch: false,
+      touchMultiplier: 1.5,
+      infinite: false,
+    });
+
+    lenisRef.current = lenis;
+
+    // Tambahkan kelas ke HTML untuk styling scroll
+    document.documentElement.classList.add('lenis');
+
+    const raf = (time) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+
+    requestAnimationFrame(raf);
+
+    // Sync scroll progress and skew effects
+    lenis.on("scroll", (e) => {
+      const progress =
+        (window.scrollY /
+          (document.documentElement.scrollHeight - window.innerHeight)) *
+        100;
+      gsap.to(".scroll-progress-bar", {
+        width: `${progress}%`,
+        duration: 0.1,
+        ease: "none",
+        force3D: true,
       });
 
-      lenisRef.current = lenis;
-
-      // Tambahkan kelas ke HTML untuk styling scroll
-      document.documentElement.classList.add('lenis');
-
-      const raf = (time) => {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
-      };
-
-      requestAnimationFrame(raf);
-
-      // Sync scroll progress and skew effects
-      lenis.on("scroll", (e) => {
-        const progress =
-          (window.scrollY /
-            (document.documentElement.scrollHeight - window.innerHeight)) *
-          100;
-        gsap.to(".scroll-progress-bar", {
-          width: `${progress}%`,
-          duration: 0.1,
-          ease: "none",
+      // Skip heavy skew on mobile or low-perf
+      if (!window.isLowPerf && !window.isMobile) {
+        const velocity = Math.min(Math.max(e.velocity, -20), 20);
+        gsap.to(".hero-center-content, .about-hero-text", {
+          skewY: velocity * 0.1,
+          duration: 0.5,
+          ease: "power2.out",
+          overwrite: "auto",
           force3D: true,
         });
-
-        // Skip skew on low perf
-        if (!window.isLowPerf) {
-          const velocity = Math.min(Math.max(e.velocity, -20), 20);
-          gsap.to(".hero-center-content, .about-hero-text", {
-            skewY: velocity * 0.1,
-            duration: 0.5,
-            ease: "power2.out",
-            overwrite: "auto",
-            force3D: true,
-          });
-          gsap.to(".marquee-container", {
-            skewX: velocity * 0.8,
-            duration: 0.5,
-            ease: "power3.out",
-            overwrite: "auto",
-            force3D: true,
-          });
-        }
-      });
-    } else {
-        // Fallback progress scroll for native scroll
-        window.addEventListener("scroll", () => {
-            const progress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-            gsap.to(".scroll-progress-bar", { width: `${progress}%`, duration: 0.1, ease: "none" });
+        gsap.to(".marquee-container", {
+          skewX: velocity * 0.8,
+          duration: 0.5,
+          ease: "power3.out",
+          overwrite: "auto",
+          force3D: true,
         });
-    }
+      }
+    });
+
 
 
 
@@ -122,28 +118,24 @@ export default function Portfolio() {
   };
 
   const initAnimations = () => {
-    // If low perf, skip long opening
-    if (window.isLowPerf) {
-        gsap.set(".hi-iam-modern, .hero-main-title .line, .hero-main-title .line-italic, .hero-image-cinematic, .hero-role-modern, .scroll-status, .scroll-indicator-modern", { 
-            opacity: 1, 
-            y: 0, 
-            x: 0,
-            scale: 1,
-            filter: "none"
-        });
-        return;
-    }
-
     // opening animation
     const tl = gsap.timeline();
-    tl.from(".hi-iam-modern", { y: 20, opacity: 0, duration: 1, ease: "power3.out" })
-      .from(".hero-main-title .line", { y: 100, opacity: 0, duration: 1.5, ease: "power4.out", stagger: 0.2 }, "-=0.8")
-      .from(".hero-main-title .line-italic", { x: -50, opacity: 0, duration: 1.5, ease: "power4.out" }, "-=1.2")
-      .from(".hero-image-cinematic", { x: 100, opacity: 0, duration: 2, ease: "power2.out" }, "-=1.5")
+    
+    if (window.isLowPerf) {
+        tl.set(".hi-iam-modern, .hero-main-title .line, .hero-main-title .line-italic, .hero-image-cinematic, .hero-role-modern, .scroll-status, .scroll-indicator-modern", { 
+            opacity: 1, y: 0, x: 0, scale: 1, filter: "none"
+        });
+    } else {
+        tl.from(".hi-iam-modern", { y: 20, opacity: 0, duration: 1, ease: "power3.out" })
+          .from(".hero-main-title .line", { y: 60, opacity: 0, duration: 1.2, ease: "power4.out", stagger: 0.15 }, "-=0.8")
+          .from(".hero-main-title .line-italic", { x: -30, opacity: 0, duration: 1.2, ease: "power4.out" }, "-=1")
+          .from(".hero-image-cinematic", { x: 50, opacity: 0, duration: 1.5, ease: "power2.out" }, "-=1.2")
+          .from(".hero-role-modern", { y: 20, opacity: 0, duration: 1, ease: "power3.out" }, "-=0.8")
+          .from(".scroll-status", { opacity: 0, duration: 1.5 }, "-=0.5")
+          .from(".scroll-indicator-modern", { y: 20, opacity: 0, duration: 1 }, "-=1");
+    }
 
-      .from(".hero-role-modern", { y: 20, opacity: 0, duration: 1, ease: "power3.out" }, "-=1")
-      .from(".scroll-status", { opacity: 0, duration: 2 }, "-=0.5")
-      .from(".scroll-indicator-modern", { y: 20, opacity: 0, duration: 1 }, "-=1");
+
 
     // Scroll Trigger Animations
     const transitionTl = gsap.timeline({

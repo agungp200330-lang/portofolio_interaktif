@@ -1534,37 +1534,52 @@ body::after {
 
     /* Hero */
     .hero-cinematic {
-        padding-top: 15vh;
-        min-height: 90vh;
+        padding-top: 10vh;
+        min-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        text-align: left;
         overflow: hidden;
     }
-    .hero-main-title {
-        font-size: clamp(2.8rem, 12vw, 4rem);
-        line-height: 1.1;
-        margin: 0.5rem 0;
+    .hero-center-content {
+        padding-top: 5vh;
         z-index: 10;
         position: relative;
     }
+    .hero-main-title {
+        font-size: clamp(3rem, 14vw, 5rem);
+        line-height: 0.9;
+        margin: 1.5rem 0;
+        display: block;
+    }
+    .hero-main-title .line {
+        display: block;
+    }
+    .hero-main-title .line-italic {
+        display: block;
+        margin-top: 0.2rem;
+    }
     .hi-iam-modern {
-        font-size: 0.7rem;
-        letter-spacing: 4px;
-        z-index: 10;
-        position: relative;
+        font-size: 0.75rem;
+        letter-spacing: 3px;
     }
     .hero-image-cinematic {
         position: absolute;
-        bottom: 5vh;
-        right: -10%;
-        width: 280px;
-        height: 380px;
-        opacity: 0.6;
+        bottom: 0;
+        right: -15%;
+        width: 300px;
+        height: 400px;
+        opacity: 0.7;
         z-index: 1;
         transform: none !important;
     }
-
     .hero-image-cinematic .image-mask {
         transform: none !important;
+        mask-image: linear-gradient(to top, transparent 0%, black 20%);
     }
+
     .scroll-status {
         position: relative;
         bottom: 0;
@@ -1664,14 +1679,14 @@ body::after {
 .low-perf *::after {
     filter: none !important;
     backdrop-filter: none !important;
-    transition-duration: 0.1s !important; /* Faster transitions */
-    box-shadow: none !important; /* Shadows are expensive to paint */
+    transition-duration: 0.3s !important; /* Fast but exists */
+    box-shadow: none !important; 
     text-shadow: none !important;
 }
 
 .low-perf .noise-overlay,
 .low-perf body::before {
-    display: none !important; /* Noise kills old CPUs */
+    display: none !important; 
 }
 
 .low-perf .glow-bg {
@@ -1679,5 +1694,5 @@ body::after {
 }
 
 .low-perf .bg-nodes-container {
-    opacity: 0.1 !important;
-}
+    opacity: 0.05 !important;
+}
