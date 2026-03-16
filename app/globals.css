@@ -47,9 +47,9 @@
     --text-color: #e8e8e8;
     --text-muted: #666666;
     --bg-dark: #0c0c0c;
-    --font-serif: 'Playfair Display', serif;
-    --font-sans: 'Inter', sans-serif;
+    /* font definitions handled by next/font in layout.js */
     --transition-cinematic: cubic-bezier(0.7, 0, 0.3, 1);
+
     --letter-spacing-ui: 3px;
 }
 

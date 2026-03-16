@@ -6,6 +6,9 @@ import gsap from "gsap";
 import Image from "next/image";
 
 
+const isProd = process.env.NODE_ENV === "production";
+const basePath = isProd ? "/portofolio_interaktif" : "";
+
 export default function ProjectModal({ project, onClose }) {
   const modalRef = useRef(null);
   const wrapperRef = useRef(null);
@@ -61,7 +64,7 @@ export default function ProjectModal({ project, onClose }) {
                 </div>
                 <div className="screenshot-item">
                   <Image
-                    src={src}
+                    src={`${basePath}${src}`}
                     alt={`${project.title} screen ${idx + 1}`}
                     width={1200}
                     height={800}
@@ -77,3 +80,4 @@ export default function ProjectModal({ project, onClose }) {
     </div>
   );
 }
+

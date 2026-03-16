@@ -11,6 +11,9 @@ import Preloader from "./Preloader";
 import MenuOverlay from "./MenuOverlay";
 import ProjectModal from "./ProjectModal";
 
+const basePath = "/portofolio_interaktif";
+
+
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -278,7 +281,7 @@ export default function Portfolio() {
           <div className="hero-image-cinematic">
             <div className="image-mask">
               <Image 
-                src="/img/fotogue.png" 
+                src={`${basePath}/img/fotogue.png`} 
                 alt="Agung Prayogi" 
                 width={380} 
                 height={500} 
@@ -399,7 +402,7 @@ export default function Portfolio() {
                       </div>
                       <div className="screenshot-item">
                         <Image 
-                          src={project.image} 
+                          src={`${basePath}${project.image}`} 
                           alt={project.title} 
                           width={1000} 
                           height={600}
