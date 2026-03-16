@@ -339,7 +339,7 @@ export default function Portfolio() {
                 <span className="about-line">that scale.</span>
               </h2>
               <div className="about-details-minimal">
-                <p>Software Developer & Data Analyst. Memiliki pengalaman dalam menganalisis data serta membangun sistem web fungsional. Saat ini aktif dalam transformasi digital di <strong>Kementerian Perdagangan</strong>, membangun sistem informasi pengelolaan data transaksi setiap bursa mengenai perdagangan berjangka komoditi.</p>
+                <p>Software Developer & Data Analyst. Experienced in data analysis and building functional web systems. Currently driving digital transformation at the <strong>Ministry of Trade</strong>, developing a transaction data management system for commodity futures exchanges.</p>
               </div>
             </div>
           </div>
@@ -359,7 +359,7 @@ export default function Portfolio() {
             </header>
             <div className="about-grid">
               <div className="about-text">
-                <p>Software Developer & Data Analyst. Memiliki pengalaman dalam menganalisis data serta membangun sistem web fungsional. Saat ini aktif dalam transformasi digital di <strong>Kementerian Perdagangan</strong>, membangun sistem informasi pengelolaan data transaksi setiap bursa mengenai perdagangan berjangka komoditi.</p>
+                <p>Software Developer & Data Analyst. Experienced in data analysis and building functional web systems. Currently driving digital transformation at the <strong>Ministry of Trade</strong>, developing a transaction data management system for commodity futures exchanges.</p>
               </div>
               <div className="about-skills-card">
                 <h3>Technical Arsenal</h3>
